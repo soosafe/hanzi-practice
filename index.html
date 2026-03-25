@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free Hanzi practice app — flashcards and pinyin quiz for HSK vocabulary" />
+  <meta property="og:title" content="Hanzi Practice" />
+  <meta property="og:description" content="Free Hanzi flashcards and pinyin quiz for HSK vocabulary" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>汉</text></svg>" />
+  <title>Hanzi Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="nav-title">汉字 Practice</div>
+    <div class="nav-center" id="navModes">
+      <button class="btn-mode active" id="btnFlashcard" aria-label="Switch to Flashcard mode">Flashcards</button>
+      <button class="btn-mode" id="btnQuiz" aria-label="Switch to Pinyin Quiz mode">Pinyin Quiz</button>
+    </div>
+    <button class="btn-theme" id="btnTheme" aria-label="Toggle dark mode">🌙</button>
+  </nav>
+
+  <div class="container">
+
+    <!-- HSK Level filter (hidden until 2+ levels exist) -->
+    <!-- Populated by JS -->
+    <div class="level-tabs hidden" id="levelTabs"></div>
+
+    <!-- Category filter -->
+    <!-- Populated by JS -->
+    <div class="cat-tabs" id="catTabs"></div>
+
+    <!-- Controls row -->
+    <div class="controls">
+      <button class="btn" id="btnShuffle" aria-label="Shuffle cards">Shuffle</button>
+      <button class="btn" id="btnReset" aria-label="Reset known state">Reset</button>
+      <button class="btn btn-accent" id="btnAddWord" aria-label="Add a new word">Add Word</button>
+      <label class="toggle-label" id="unknownsToggle">
+        <input type="checkbox" id="unknownsOnly" />
+        Unknowns only
+      </label>
+    </div>
+
+    <!-- Progress -->
+    <!-- NOTE: JS should update aria-valuenow on the inner #progressBar element, not #progressWrap -->
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-label" id="progressLabel" aria-live="polite"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats" id="statsBar" aria-live="polite"></div>
+
+    <!-- Main content area -->
+    <main id="mainArea"></main>
+
+  </div>
+
+  <!-- Voice info -->
+  <div class="container">
+    <p class="voice-info" id="voiceInfo" aria-live="polite"></p>
+  </div>
+
+  <!-- Add Word Modal -->
+  <div class="modal-overlay hidden" id="addWordModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="modalPanel">
+      <h2 id="modalTitle">Add Word</h2>
+
+      <div class="form-group">
+        <label for="f-hanzi">Hanzi</label>
+        <input type="text" id="f-hanzi" placeholder="e.g. 你好" autocomplete="off" />
+        <p class="field-error hidden" id="err-hanzi"></p>
+      </div>
+      <div class="form-group">
+        <label for="f-pinyin">Pinyin</label>
+        <input type="text" id="f-pinyin" placeholder="e.g. nǐ hǎo" autocomplete="off" />
+        <p class="field-error hidden" id="err-pinyin"></p>
+      </div>
+      <div class="form-group">
+        <label for="f-meaning">Meaning</label>
+        <input type="text" id="f-meaning" placeholder="e.g. Hello" autocomplete="off" />
+        <p class="field-error hidden" id="err-meaning"></p>
+      </div>
+      <div class="form-group">
+        <label for="f-cat">Category</label>
+        <select id="f-cat">
+          <option value="words">Words</option>
+          <option value="time">Time</option>
+          <option value="numbers">Numbers</option>
+          <option value="family">Family</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="f-tip">Hanzi Tip <span class="optional">(optional)</span></label>
+        <textarea id="f-tip" placeholder="Visual memory for the character shape" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="f-wtip">Word Tip <span class="optional">(optional)</span></label>
+        <textarea id="f-wtip" placeholder="Sound or meaning hook to remember the word" rows="2"></textarea>
+      </div>
+
+      <div class="modal-btns">
+        <button class="btn" id="btnModalCancel" aria-label="Cancel and close form">Cancel</button>
+        <button class="btn btn-accent" id="btnModalSubmit" aria-label="Submit new word">Add Word</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
