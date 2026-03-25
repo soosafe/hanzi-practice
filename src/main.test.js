@@ -11,8 +11,8 @@ import {
 } from './main.js'
 
 describe('Word data integrity', () => {
-  it('DEFAULT_WORDS has 52 words', () => {
-    expect(DEFAULT_WORDS).toHaveLength(52)
+  it('DEFAULT_WORDS has 64 words', () => {
+    expect(DEFAULT_WORDS).toHaveLength(64)
   })
 
   it('every word has all required fields', () => {
