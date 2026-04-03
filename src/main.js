@@ -25,7 +25,7 @@ export function getFilteredDeck(words, cat, level, unknownsOnly, knownSet) {
 
 export function buildCatCounts(words, activeLevel) {
   const filtered = activeLevel === 'all' ? words : words.filter(w => w.level === activeLevel)
-  const cats = ['time', 'numbers', 'words', 'family']
+  const cats = ['time', 'numbers', 'words', 'family', 'hobbies', 'phrases']
   const counts = { all: filtered.length }
   for (const cat of cats) {
     counts[cat] = filtered.filter(w => w.cat === cat).length
@@ -182,6 +182,8 @@ const CAT_DEFS = [
   { id: 'numbers', label: 'Numbers' },
   { id: 'words', label: 'Words' },
   { id: 'family', label: 'Family' },
+  { id: 'hobbies', label: 'Hobbies' },
+  { id: 'phrases', label: 'Phrases' },
 ]
 
 function renderCatTabs() {
