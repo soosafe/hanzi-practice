@@ -63,10 +63,10 @@ function loadState() {
     const savedWords = localStorage.getItem('hanzi_words')
     if (savedWords) {
       const parsed = JSON.parse(savedWords)
-      const savedSet = new Set(parsed.map(w => w.h))
-      const newWords = DEFAULT_WORDS.filter(w => !savedSet.has(w.h))
-      WORDS = [...parsed, ...newWords]
-      if (newWords.length) saveWords()
+      const defaultSet = new Set(DEFAULT_WORDS.map(w => w.h))
+      const userAddedWords = parsed.filter(w => !defaultSet.has(w.h))
+      WORDS = [...DEFAULT_WORDS, ...userAddedWords]
+      saveWords()
     } else {
       WORDS = [...DEFAULT_WORDS]
     }
