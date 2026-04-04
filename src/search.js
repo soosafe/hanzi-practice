@@ -49,3 +49,120 @@ export function searchWords(query, words) {
     .slice(0, 10)
     .map(s => s.word)
 }
+
+// ─── Module state ─────────────────────────────────────────────────────────────
+
+let _getWords = null
+let _speak = null
+let _dropdownEl = null
+let _detailModalEl = null
+let _mobileModalEl = null
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+
+export function initSearch(getWords, speak) {
+  _getWords = getWords
+  _speak = speak
+  _createDropdown()
+  _createDetailModal()
+  _createMobileModal()
+  _wireSearchButton()
+}
+
+// ─── Dropdown ─────────────────────────────────────────────────────────────────
+
+function _createDropdown() {
+  _dropdownEl = document.createElement('div')
+  _dropdownEl.id = 'searchDropdown'
+  _dropdownEl.className = 'search-dropdown hidden'
+  _dropdownEl.setAttribute('role', 'listbox')
+  _dropdownEl.setAttribute('aria-label', 'Search results')
+  const navRight = document.querySelector('.nav-right')
+  navRight.appendChild(_dropdownEl)
+}
+
+function _wireSearchButton() {
+  const btn = document.getElementById('btnSearch')
+  const input = document.getElementById('searchInput')
+
+  btn.addEventListener('click', () => {
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      _openMobileModal()
+    } else {
+      _toggleDesktopSearch()
+    }
+  })
+
+  input.addEventListener('input', () => {
+    _renderDropdown(input.value)
+  })
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      _closeDesktopSearch()
+    }
+  })
+
+  document.addEventListener('click', e => {
+    const navRight = document.querySelector('.nav-right')
+    if (!navRight.contains(e.target)) {
+      _closeDesktopSearch()
+    }
+  })
+}
+
+function _toggleDesktopSearch() {
+  const input = document.getElementById('searchInput')
+  if (input.classList.contains('open')) {
+    _closeDesktopSearch()
+  } else {
+    input.classList.add('open')
+    input.focus()
+  }
+}
+
+function _closeDesktopSearch() {
+  const input = document.getElementById('searchInput')
+  input.classList.remove('open')
+  input.value = ''
+  _dropdownEl.classList.add('hidden')
+  _dropdownEl.innerHTML = ''
+}
+
+function _renderDropdown(query) {
+  const results = searchWords(query, _getWords())
+  _dropdownEl.innerHTML = ''
+
+  if (!query.trim()) {
+    _dropdownEl.classList.add('hidden')
+    return
+  }
+
+  if (results.length === 0) {
+    _dropdownEl.classList.remove('hidden')
+    _dropdownEl.innerHTML = '<div class="search-no-results">No results found</div>'
+    return
+  }
+
+  _dropdownEl.classList.remove('hidden')
+  results.forEach(word => {
+    const item = document.createElement('div')
+    item.className = 'search-result-item'
+    item.setAttribute('role', 'option')
+    item.innerHTML = `
+      <div class="search-result-hanzi">${escHtml(word.h)}</div>
+      <div class="search-result-meta">
+        <div class="search-result-pinyin">${escHtml(word.p)}</div>
+        <div class="search-result-meaning">${escHtml(word.m)}</div>
+      </div>`
+    item.addEventListener('click', () => _openDetailModal(word))
+    _dropdownEl.appendChild(item)
+  })
+}
+
+// ─── Stubs (implemented in Tasks 5 and 6) ────────────────────────────────────
+
+function _createDetailModal() {}
+function _openDetailModal(_word) {}
+function _createMobileModal() {}
+function _openMobileModal() {}
