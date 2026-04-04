@@ -11,8 +11,8 @@ import {
 } from './main.js'
 
 describe('Word data integrity', () => {
-  it('DEFAULT_WORDS has 64 words', () => {
-    expect(DEFAULT_WORDS).toHaveLength(64)
+  it('DEFAULT_WORDS has 96 words', () => {
+    expect(DEFAULT_WORDS).toHaveLength(96)
   })
 
   it('every word has all required fields', () => {
@@ -32,7 +32,7 @@ describe('Word data integrity', () => {
   })
 
   it('all cat values are valid', () => {
-    const valid = new Set(['words', 'time', 'numbers', 'family'])
+    const valid = new Set(['words', 'time', 'numbers', 'family', 'hobbies', 'phrases'])
     expect(DEFAULT_WORDS.every(w => valid.has(w.cat))).toBe(true)
   })
 

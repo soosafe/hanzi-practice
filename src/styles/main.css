@@ -99,6 +99,145 @@ body {
 }
 .btn-theme:hover { border-color: var(--text-2); }
 
+/* ── Search ─────────────────────────────────────────────────────────────────── */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.search-input {
+  width: 0;
+  opacity: 0;
+  padding: 5px 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-ui);
+  outline: none;
+  overflow: hidden;
+  transition: width 0.25s ease, opacity 0.2s ease, padding 0.25s ease, border-color 0.25s ease;
+}
+.search-input.open {
+  width: 200px;
+  opacity: 1;
+  padding: 5px 10px;
+  border-color: var(--border);
+}
+.search-input:focus { border-color: var(--text-2); }
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  min-width: 280px;
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 200;
+}
+.search-dropdown.hidden { display: none; }
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover { background: var(--surface); }
+
+.search-result-hanzi {
+  font-family: var(--font-cjk);
+  font-size: 20px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.search-result-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.search-result-pinyin { font-size: 12px; color: var(--text-2); }
+.search-result-meaning { font-size: 13px; color: var(--text); }
+
+.search-no-results {
+  padding: 14px;
+  text-align: center;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+/* ── Search detail modal ────────────────────────────────────────────────────── */
+.search-detail-hanzi {
+  font-family: var(--font-cjk);
+  font-size: 56px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.search-detail-pinyin {
+  text-align: center;
+  color: var(--text-2);
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.search-detail-meaning {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.search-detail-level {
+  text-align: center;
+  margin-bottom: 14px;
+}
+.search-detail-level .hsk-badge {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 3px 12px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+/* ── Search mobile modal ────────────────────────────────────────────────────── */
+.search-mobile-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+}
+.search-mobile-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  font-family: var(--font-ui);
+  outline: none;
+}
+.search-mobile-input:focus { border-color: var(--text-2); }
+.search-mobile-results {
+  max-height: 50vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
 /* ── Container ──────────────────────────────────────────────────────────────── */
 .container {
   max-width: var(--max-w);

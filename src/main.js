@@ -1,4 +1,5 @@
 import { DEFAULT_WORDS } from './data/index.js'
+import { initSearch } from './search.js'
 
 // ─── Pure utility functions ───────────────────────────────────────────────────
 
@@ -714,6 +715,7 @@ function init() {
   initVoice()
   wireGlobalEvents()
   rebuildDeck()
+  initSearch(() => WORDS, speak)
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
