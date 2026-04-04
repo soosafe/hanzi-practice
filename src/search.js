@@ -160,9 +160,74 @@ function _renderDropdown(query) {
   })
 }
 
-// ─── Stubs (implemented in Tasks 5 and 6) ────────────────────────────────────
+// ─── Detail modal ─────────────────────────────────────────────────────────────
 
-function _createDetailModal() {}
-function _openDetailModal(_word) {}
+function _createDetailModal() {
+  _detailModalEl = document.createElement('div')
+  _detailModalEl.className = 'modal-overlay hidden'
+  _detailModalEl.id = 'searchDetailModal'
+  _detailModalEl.setAttribute('role', 'dialog')
+  _detailModalEl.setAttribute('aria-modal', 'true')
+  _detailModalEl.setAttribute('aria-label', 'Word detail')
+  _detailModalEl.innerHTML = `
+    <div class="modal" id="searchDetailPanel">
+      <div class="search-detail-hanzi" id="searchDetailHanzi"></div>
+      <div class="search-detail-pinyin" id="searchDetailPinyin"></div>
+      <div class="search-detail-meaning" id="searchDetailMeaning"></div>
+      <div class="search-detail-level"><span class="hsk-badge" id="searchDetailLevel"></span></div>
+      <div class="tips" id="searchDetailTips"></div>
+      <div class="modal-btns">
+        <button class="btn" id="searchDetailListen" aria-label="Listen to pronunciation">🔊 Listen</button>
+        <button class="btn btn-accent" id="searchDetailClose" aria-label="Close word detail">Close</button>
+      </div>
+    </div>`
+  document.body.appendChild(_detailModalEl)
+
+  document.getElementById('searchDetailClose').addEventListener('click', _closeDetailModal)
+  document.getElementById('searchDetailPanel').addEventListener('click', e => e.stopPropagation())
+  _detailModalEl.addEventListener('click', _closeDetailModal)
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !_detailModalEl.classList.contains('hidden')) {
+      _closeDetailModal()
+    }
+  })
+}
+
+function _openDetailModal(word) {
+  document.getElementById('searchDetailHanzi').textContent = word.h
+  document.getElementById('searchDetailPinyin').textContent = word.p
+  document.getElementById('searchDetailMeaning').textContent = word.m
+  document.getElementById('searchDetailLevel').textContent = 'HSK ' + word.level
+
+  const tipsEl = document.getElementById('searchDetailTips')
+  tipsEl.innerHTML = ''
+  if (word.tip && word.tip !== 'No tip provided.') {
+    tipsEl.innerHTML += `
+      <div class="tip-box hanzi-tip">
+        <div class="tip-label">Hanzi Tip</div>
+        <div class="tip-text">${escHtml(word.tip)}</div>
+      </div>`
+  }
+  if (word.wtip && word.wtip !== 'No tip provided.') {
+    tipsEl.innerHTML += `
+      <div class="tip-box word-tip">
+        <div class="tip-label">Word Tip</div>
+        <div class="tip-text">${escHtml(word.wtip)}</div>
+      </div>`
+  }
+
+  const listenBtn = document.getElementById('searchDetailListen')
+  listenBtn.onclick = () => _speak(word.h)
+
+  _detailModalEl.classList.remove('hidden')
+}
+
+function _closeDetailModal() {
+  _detailModalEl.classList.add('hidden')
+}
+
+// ─── Mobile modal stubs (implemented in Task 6) ───────────────────────────────
+
 function _createMobileModal() {}
 function _openMobileModal() {}
