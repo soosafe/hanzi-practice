@@ -63,4 +63,22 @@ describe('searchWords', () => {
   it('returns empty array when no match', () => {
     expect(searchWords('zzz', words)).toEqual([])
   })
+
+  it('matches by English meaning', () => {
+    const results = searchWords('Hello', words)
+    expect(results).toHaveLength(1)
+    expect(results[0].h).toBe('你好')
+  })
+
+  it('meaning search is case-insensitive', () => {
+    const results = searchWords('hello', words)
+    expect(results).toHaveLength(1)
+    expect(results[0].h).toBe('你好')
+  })
+
+  it('matches partial meaning', () => {
+    const results = searchWords('stud', words)
+    expect(results).toHaveLength(1)
+    expect(results[0].h).toBe('学习')
+  })
 })

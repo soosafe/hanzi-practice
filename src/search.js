@@ -36,8 +36,9 @@ export function searchWords(query, words) {
       if (w.h === trimmed) score = 1000      // exact match
       else if (w.h.includes(trimmed)) score = 500  // partial match
     } else {
-      // Query is pinyin: match against pinyin only (if normalQ is non-empty after normalization)
+      // Query is pinyin or English: check pinyin first, then meaning
       if (normalQ && normalizePinyin(w.p).includes(normalQ)) score = 100
+      else if (w.m.toLowerCase().includes(trimmed.toLowerCase())) score = 80
     }
 
     return { word: w, score }
