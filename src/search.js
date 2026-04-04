@@ -227,7 +227,86 @@ function _closeDetailModal() {
   _detailModalEl.classList.add('hidden')
 }
 
-// ─── Mobile modal stubs (implemented in Task 6) ───────────────────────────────
+// ─── Mobile modal ─────────────────────────────────────────────────────────────
 
-function _createMobileModal() {}
-function _openMobileModal() {}
+function _createMobileModal() {
+  _mobileModalEl = document.createElement('div')
+  _mobileModalEl.className = 'modal-overlay hidden'
+  _mobileModalEl.id = 'searchMobileModal'
+  _mobileModalEl.setAttribute('role', 'dialog')
+  _mobileModalEl.setAttribute('aria-modal', 'true')
+  _mobileModalEl.setAttribute('aria-label', 'Search words')
+  _mobileModalEl.innerHTML = `
+    <div class="modal search-mobile-modal">
+      <input
+        type="text"
+        id="searchMobileInput"
+        class="search-mobile-input"
+        placeholder="Search Hanzi or Pinyin…"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        aria-label="Search words"
+      />
+      <div id="searchMobileResults" class="search-mobile-results"></div>
+      <div class="modal-btns">
+        <button class="btn" id="searchMobileClose" aria-label="Close search">Close</button>
+      </div>
+    </div>`
+  document.body.appendChild(_mobileModalEl)
+
+  document.getElementById('searchMobileClose').addEventListener('click', _closeMobileModal)
+  _mobileModalEl.querySelector('.modal').addEventListener('click', e => e.stopPropagation())
+  _mobileModalEl.addEventListener('click', _closeMobileModal)
+
+  document.getElementById('searchMobileInput').addEventListener('input', e => {
+    _renderMobileResults(e.target.value)
+  })
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !_mobileModalEl.classList.contains('hidden')) {
+      _closeMobileModal()
+    }
+  })
+}
+
+function _openMobileModal() {
+  _mobileModalEl.classList.remove('hidden')
+  document.getElementById('searchMobileResults').innerHTML = ''
+  const input = document.getElementById('searchMobileInput')
+  input.value = ''
+  setTimeout(() => input.focus(), 50)
+}
+
+function _closeMobileModal() {
+  _mobileModalEl.classList.add('hidden')
+}
+
+function _renderMobileResults(query) {
+  const container = document.getElementById('searchMobileResults')
+  const results = searchWords(query, _getWords())
+  container.innerHTML = ''
+
+  if (!query.trim()) return
+
+  if (results.length === 0) {
+    container.innerHTML = '<div class="search-no-results">No results found</div>'
+    return
+  }
+
+  results.forEach(word => {
+    const item = document.createElement('div')
+    item.className = 'search-result-item'
+    item.innerHTML = `
+      <div class="search-result-hanzi">${escHtml(word.h)}</div>
+      <div class="search-result-meta">
+        <div class="search-result-pinyin">${escHtml(word.p)}</div>
+        <div class="search-result-meaning">${escHtml(word.m)}</div>
+      </div>`
+    item.addEventListener('click', () => {
+      _closeMobileModal()
+      _openDetailModal(word)
+    })
+    container.appendChild(item)
+  })
+}
