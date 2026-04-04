@@ -155,7 +155,10 @@ function _renderDropdown(query) {
         <div class="search-result-pinyin">${escHtml(word.p)}</div>
         <div class="search-result-meaning">${escHtml(word.m)}</div>
       </div>`
-    item.addEventListener('click', () => _openDetailModal(word))
+    item.addEventListener('click', () => {
+      _closeDesktopSearch()
+      _openDetailModal(word)
+    })
     _dropdownEl.appendChild(item)
   })
 }
