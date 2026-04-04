@@ -1,5 +1,5 @@
 /* ── Fonts ─────────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700;900&display=swap');
 
 /* ── Tokens ─────────────────────────────────────────────────────────────────── */
 :root {
@@ -640,6 +640,125 @@ body {
   justify-content: flex-end;
   margin-top: 20px;
 }
+
+/* ── Visual Words section ───────────────────────────────────────────────────── */
+.v-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.v-card-head {
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.v-eyebrow {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+.v-hanzi {
+  font-family: 'Noto Serif SC', 'STSong', serif;
+  font-size: clamp(2.8rem, 10vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 0.9rem;
+}
+.v-pinyin-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 0.6rem;
+}
+.v-py { font-size: 1rem; font-weight: 500; }
+.v-meaning { font-size: 0.95rem; color: var(--text-2); }
+.v-card-body { padding: 1.5rem; }
+.v-section-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  opacity: 0.7;
+  margin-bottom: 0.8rem;
+}
+.v-chars-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.v-char-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 0.6rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.v-char-zh {
+  font-family: 'Noto Serif SC', 'STSong', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+.v-char-visual { width: 80px; height: 68px; }
+.v-char-story { font-size: 0.65rem; color: var(--text-2); text-align: center; line-height: 1.5; }
+.v-char-gloss { font-size: 0.75rem; font-weight: 600; color: var(--text); }
+.v-tip-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem 1rem;
+}
+.v-tip-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 1rem;
+}
+.v-tone-row {
+  display: flex;
+  justify-content: space-around;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.v-tone-unit {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.v-tone-zh {
+  font-family: 'Noto Serif SC', 'STSong', serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.v-tone-svg { width: 50px; height: 32px; }
+.v-tone-py { font-size: 0.7rem; font-weight: 500; color: var(--text-2); }
+.v-tone-desc { font-size: 0.6rem; color: var(--text-2); text-align: center; opacity: 0.75; }
+.v-mnemonic {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  font-size: 0.82rem;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.v-mnemonic strong { color: var(--text); }
 
 /* ── Utility ────────────────────────────────────────────────────────────────── */
 .hidden { display: none !important; }

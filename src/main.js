@@ -1,5 +1,6 @@
 import { DEFAULT_WORDS } from './data/index.js'
 import { initSearch } from './search.js'
+import { renderVisuals } from './visuals.js'
 
 // ─── Pure utility functions ───────────────────────────────────────────────────
 
@@ -280,8 +281,19 @@ function setMode(m) {
   mode = m
   document.getElementById('btnFlashcard').classList.toggle('active', m === 'flashcard')
   document.getElementById('btnQuiz').classList.toggle('active', m === 'quiz')
-  document.getElementById('unknownsToggle').classList.toggle('hidden', m === 'quiz')
-  rebuildDeck()
+  document.getElementById('btnVisuals').classList.toggle('active', m === 'visuals')
+  document.getElementById('unknownsToggle').classList.toggle('hidden', m !== 'flashcard')
+  const isVisuals = m === 'visuals'
+  document.getElementById('levelTabs').classList.toggle('hidden', isVisuals)
+  document.getElementById('catTabs').classList.toggle('hidden', isVisuals)
+  document.querySelector('.controls').classList.toggle('hidden', isVisuals)
+  document.getElementById('progressWrap').classList.toggle('hidden', isVisuals)
+  document.getElementById('statsBar').classList.toggle('hidden', isVisuals)
+  if (isVisuals) {
+    renderMain()
+  } else {
+    rebuildDeck()
+  }
 }
 
 // ─── Event wiring ─────────────────────────────────────────────────────────────
@@ -289,6 +301,7 @@ function setMode(m) {
 function wireGlobalEvents() {
   document.getElementById('btnFlashcard').addEventListener('click', () => setMode('flashcard'))
   document.getElementById('btnQuiz').addEventListener('click', () => setMode('quiz'))
+  document.getElementById('btnVisuals').addEventListener('click', () => setMode('visuals'))
   document.getElementById('btnTheme').addEventListener('click', toggleTheme)
   document.getElementById('btnShuffle').addEventListener('click', shuffle)
   document.getElementById('btnReset').addEventListener('click', () => {
@@ -306,8 +319,10 @@ function wireGlobalEvents() {
 // ─── Render dispatcher (replaces the Task 5 stub) ────────────────────────────
 
 function renderMain() {
+  const area = document.getElementById('mainArea')
   if (mode === 'flashcard') renderFlashcard()
-  else renderQuiz()
+  else if (mode === 'quiz') renderQuiz()
+  else renderVisuals(area, WORDS)
 }
 
 // ─── Quiz mode ────────────────────────────────────────────────────────────────
