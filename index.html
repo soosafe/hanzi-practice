@@ -22,9 +22,17 @@
     <div class="nav-center" id="navModes">
       <button class="btn-mode active" id="btnFlashcard" aria-label="Switch to Flashcard mode">Flashcards</button>
       <button class="btn-mode" id="btnQuiz" aria-label="Switch to Pinyin Quiz mode">Pinyin Quiz</button>
-      <button class="btn-mode" id="btnVisuals" aria-label="Switch to Visual Words mode">Visuals</button>
+      <button class="btn-mode" id="btnVisuals" aria-label="Switch to Visual Learning mode">Visual Learning</button>
     </div>
     <div class="nav-right">
+      <div class="mobile-menu-wrap">
+        <button class="btn-theme" id="btnMobileMenu" aria-label="Open navigation menu" aria-expanded="false">···</button>
+        <div class="mobile-menu-dropdown hidden" id="mobileMenuDropdown" role="menu">
+          <button class="btn-mode" data-mode="flashcard" role="menuitem">Flashcards</button>
+          <button class="btn-mode" data-mode="quiz" role="menuitem">Pinyin Quiz</button>
+          <button class="btn-mode" data-mode="visuals" role="menuitem">Visual Learning</button>
+        </div>
+      </div>
       <button class="btn-theme" id="btnTheme" aria-label="Toggle dark mode">🌙</button>
       <button class="btn-theme" id="btnSearch" aria-label="Search words">🔍</button>
       <input
@@ -55,6 +63,7 @@
       <button class="btn" id="btnShuffle" aria-label="Shuffle cards">Shuffle</button>
       <button class="btn" id="btnReset" aria-label="Reset known state">Reset</button>
       <button class="btn btn-accent" id="btnAddWord" aria-label="Add a new word">Add Word</button>
+      <button class="btn" id="btnShowAll" aria-label="Show all words in current filter">Show All</button>
       <label class="toggle-label" id="unknownsToggle">
         <input type="checkbox" id="unknownsOnly" />
         Unknowns only
@@ -111,6 +120,7 @@
           <option value="numbers">Numbers</option>
           <option value="family">Family</option>
           <option value="hobbies">Hobbies</option>
+          <option value="food">Food</option>
           <option value="phrases">Phrases</option>
         </select>
       </div>
@@ -127,6 +137,17 @@
         <button class="btn" id="btnModalCancel" aria-label="Cancel and close form">Cancel</button>
         <button class="btn btn-accent" id="btnModalSubmit" aria-label="Submit new word">Add Word</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Show All Modal -->
+  <div class="modal-overlay hidden" id="showAllModal" role="dialog" aria-modal="true" aria-labelledby="showAllTitle">
+    <div class="modal" id="showAllPanel">
+      <div class="show-all-header">
+        <h2 id="showAllTitle">All Words</h2>
+        <button class="btn-remove" id="btnShowAllClose" aria-label="Close">×</button>
+      </div>
+      <div id="showAllList"></div>
     </div>
   </div>
 

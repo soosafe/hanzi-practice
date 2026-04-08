@@ -27,7 +27,7 @@ export function getFilteredDeck(words, cat, level, unknownsOnly, knownSet) {
 
 export function buildCatCounts(words, activeLevel) {
   const filtered = activeLevel === 'all' ? words : words.filter(w => w.level === activeLevel)
-  const cats = ['time', 'numbers', 'words', 'family', 'hobbies', 'phrases']
+  const cats = ['time', 'numbers', 'words', 'family', 'hobbies', 'food', 'phrases']
   const counts = { all: filtered.length }
   for (const cat of cats) {
     counts[cat] = filtered.filter(w => w.cat === cat).length
@@ -193,6 +193,7 @@ const CAT_DEFS = [
   { id: 'words', label: 'Words' },
   { id: 'family', label: 'Family' },
   { id: 'hobbies', label: 'Hobbies' },
+  { id: 'food', label: 'Food' },
   { id: 'phrases', label: 'Phrases' },
 ]
 
@@ -282,6 +283,9 @@ function setMode(m) {
   document.getElementById('btnFlashcard').classList.toggle('active', m === 'flashcard')
   document.getElementById('btnQuiz').classList.toggle('active', m === 'quiz')
   document.getElementById('btnVisuals').classList.toggle('active', m === 'visuals')
+  document.getElementById('mobileMenuDropdown').querySelectorAll('.btn-mode').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === m)
+  })
   document.getElementById('unknownsToggle').classList.toggle('hidden', m !== 'flashcard')
   const isVisuals = m === 'visuals'
   document.getElementById('levelTabs').classList.toggle('hidden', isVisuals)
@@ -294,6 +298,69 @@ function setMode(m) {
   } else {
     rebuildDeck()
   }
+}
+
+// ─── Mobile menu ──────────────────────────────────────────────────────────────
+
+function openMobileMenu() {
+  const dropdown = document.getElementById('mobileMenuDropdown')
+  const btn = document.getElementById('btnMobileMenu')
+  dropdown.classList.remove('hidden')
+  btn.setAttribute('aria-expanded', 'true')
+  // sync active state
+  dropdown.querySelectorAll('.btn-mode').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode)
+  })
+  setTimeout(() => document.addEventListener('click', closeMobileMenuOutside), 0)
+}
+
+function closeMobileMenuOutside(e) {
+  const wrap = document.querySelector('.mobile-menu-wrap')
+  if (!wrap.contains(e.target)) closeMobileMenu()
+}
+
+function closeMobileMenu() {
+  document.getElementById('mobileMenuDropdown').classList.add('hidden')
+  document.getElementById('btnMobileMenu').setAttribute('aria-expanded', 'false')
+  document.removeEventListener('click', closeMobileMenuOutside)
+}
+
+// ─── Show All modal ───────────────────────────────────────────────────────────
+
+function openShowAll() {
+  const overlay = document.getElementById('showAllModal')
+  const list = document.getElementById('showAllList')
+  const title = document.getElementById('showAllTitle')
+
+  const filtered = getFilteredDeck(WORDS, activeCat, activeLevel, false, new Set())
+  const catLabel = CAT_DEFS.find(c => c.id === activeCat)?.label || 'All'
+  const levelLabel = activeLevel === 'all' ? '' : ` · HSK ${activeLevel}`
+  title.textContent = `${catLabel}${levelLabel} — ${filtered.length} words`
+
+  if (!filtered.length) {
+    list.innerHTML = '<p style="text-align:center;color:var(--text-2);padding:24px">No words in this filter.</p>'
+  } else {
+    list.innerHTML = filtered.map(w => `
+      <div class="show-all-item">
+        <div class="show-all-hanzi">${w.h}</div>
+        <div class="show-all-details">
+          <div class="show-all-pinyin">${escHtml(w.p)}</div>
+          <div class="show-all-meaning">${escHtml(w.m)}</div>
+        </div>
+        <button class="btn-play" data-h="${escHtml(w.h)}" aria-label="Listen to ${escHtml(w.h)}">🔊</button>
+      </div>`).join('')
+  }
+
+  overlay.classList.remove('hidden')
+  list.querySelectorAll('.btn-play').forEach(btn => {
+    btn.addEventListener('click', () => speak(btn.dataset.h))
+  })
+  document.getElementById('btnShowAllClose').addEventListener('click', closeShowAll)
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeShowAll() })
+}
+
+function closeShowAll() {
+  document.getElementById('showAllModal').classList.add('hidden')
 }
 
 // ─── Event wiring ─────────────────────────────────────────────────────────────
@@ -310,9 +377,22 @@ function wireGlobalEvents() {
     rebuildDeck()
   })
   document.getElementById('btnAddWord').addEventListener('click', openModal)
+  document.getElementById('btnShowAll').addEventListener('click', openShowAll)
+  document.getElementById('btnMobileMenu').addEventListener('click', e => {
+    e.stopPropagation()
+    const dropdown = document.getElementById('mobileMenuDropdown')
+    if (dropdown.classList.contains('hidden')) openMobileMenu()
+    else closeMobileMenu()
+  })
+  document.getElementById('mobileMenuDropdown').querySelectorAll('.btn-mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setMode(btn.dataset.mode)
+      closeMobileMenu()
+    })
+  })
   document.getElementById('unknownsOnly').addEventListener('change', rebuildDeck)
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal()
+    if (e.key === 'Escape') { closeModal(); closeShowAll(); closeMobileMenu() }
   })
 }
 
