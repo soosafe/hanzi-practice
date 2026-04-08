@@ -329,6 +329,9 @@ body {
 .btn-blue    { border-color: var(--blue); color: var(--blue); }
 .btn-blue:hover { background: var(--blue); color: white; }
 
+.btn-solid-blue { background: var(--blue); color: white; border-color: var(--blue); }
+.btn-solid-blue:hover { background: #0078d4; border-color: #0078d4; }
+
 /* ── Toggle ─────────────────────────────────────────────────────────────────── */
 .toggle-label {
   display: flex;
