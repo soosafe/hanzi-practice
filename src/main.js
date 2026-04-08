@@ -187,14 +187,14 @@ function renderLevelTabs() {
 // ─── Category tabs ────────────────────────────────────────────────────────────
 
 const CAT_DEFS = [
-  { id: 'all', label: 'All' },
-  { id: 'time', label: 'Time' },
-  { id: 'numbers', label: 'Numbers' },
-  { id: 'words', label: 'Words' },
-  { id: 'family', label: 'Family' },
-  { id: 'hobbies', label: 'Hobbies' },
-  { id: 'food', label: 'Food' },
-  { id: 'phrases', label: 'Phrases' },
+  { id: 'all', label: '✨ All' },
+  { id: 'time', label: '⏰ Time' },
+  { id: 'numbers', label: '🔢 Numbers' },
+  { id: 'words', label: '📝 Words' },
+  { id: 'family', label: '👨‍👩‍👧 Family' },
+  { id: 'hobbies', label: '🎯 Hobbies' },
+  { id: 'food', label: '🍜 Food' },
+  { id: 'phrases', label: '💬 Phrases' },
 ]
 
 function renderCatTabs() {
